@@ -4,7 +4,7 @@ An implementation of a sandboxed environment for running untrusted code with lim
 
 Credit for many of the ideas for running sandboxed code goes to Will Sargent's [Sandbox Experiment in Scala](https://github.com/wsargent/sandboxexperiment).
 
-# Building and Running
+## Building and Running
 
 To build the project run:
 
@@ -19,19 +19,20 @@ java -jar simple-runtime-bootstrap/target/simple-runtime-bootstrap-1.0-SNAPSHOT.
 
 ```
 
-# The Sandbox
+## The Sandbox
 
 The sandbox works by using the Java `SecurityManager` along with a custom `ClassLoader` and `Policy`. The policy determines the permissions of the running code by the associated code source or class loader for each class. One caveat to this is that code that is to run with limited permissions must be loaded from a separate jar at runtime.
 
 The permissions for sandboxed code is determined by the `RuntimePolicy` class and the `UserClassLoader`. The `UserClassLoader` explains how dynamic permissions could be given to different sandboxed jars.
 
 
-# Fine-grained Permissions
+## Fine-grained Permissions
 
 One of the problems with using the `SecurityManager` is that some of the permissions provided by Java are somewhat broader than you would want. For instance, many libraries require reflection, but there are only 2 permissions around reflection.
 
  * `ReflectPermission("suppressAccessChecks")`
- * `ReflectPermission("newProxyInPackage.{package name}")`.
+ * `ReflectPermission("newProxyInPackage.{package name}")`
+
 
  Enabling the `suppressAccessChecks` for sandboxed code effectively defeats the security provided by the sandbox. The sandboxed code can use this permission to access private fields and methods on all code, including Java classes and your own runtime environment classes, and disable the security manager or access methods that bypass normal security checks. By leaving this permission disabled many widely used libraries will not function in the sandbox environment.
 
