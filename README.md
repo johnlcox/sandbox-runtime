@@ -66,7 +66,7 @@ As seen from the examples above, once untrusted code begins executing there is n
 
 Another potential problem that the `SecurityManager` can't protect against is runaway allocations. The untrusted code has no limitations on the amount of objects it can allocated. This means it can crash the JVM with an `OutOfMemoryError`. I haven't provided an example of this, but it should be trivial to create.
 
-As far as I know there isn't a good workaround or alternative to avoid runaway threads. For the allocation problem, however, it may be possible to avoid this by using a library like [allocation-instrument](https://github.com/google/allocation-instrumenter). Through use of a library like this allocations per untrusted user could be tracked and limits could be put in place.
+As far as I know there isn't a good workaround or alternative to avoid runaway threads. For the allocation problem, however, it may be possible to avoid this by using a library like [allocation-instrumenter](https://github.com/google/allocation-instrumenter). Through use of a library like this allocations per untrusted user could be tracked and limits could be put in place.
 
 ## License
 
