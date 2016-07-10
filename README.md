@@ -33,14 +33,13 @@ One of the problems with using the `SecurityManager` is that some of the permiss
  * `ReflectPermission("suppressAccessChecks")`
  * `ReflectPermission("newProxyInPackage.{package name}")`
 
+Enabling the `suppressAccessChecks` for sandboxed code effectively defeats the security provided by the sandbox. The sandboxed code can use this permission to access private fields and methods on all code, including Java classes and your own runtime environment classes, and disable the security manager or access methods that bypass normal security checks. By leaving this permission disabled many widely used libraries will not function in the sandbox environment.
 
- Enabling the `suppressAccessChecks` for sandboxed code effectively defeats the security provided by the sandbox. The sandboxed code can use this permission to access private fields and methods on all code, including Java classes and your own runtime environment classes, and disable the security manager or access methods that bypass normal security checks. By leaving this permission disabled many widely used libraries will not function in the sandbox environment.
+It would be nice to be able to selectively enable the `suppressAccessChecks` permission; to allow it as long as the object that is being accessed (callee) and the object performing the access (caller) are from the same code source. In other words, allow the sandboxed code to perform reflections on itself, but not on the Java classes or classes of your own runtime environment.
 
- It would be nice to be able to selectively enable the `suppressAccessChecks` permission; to allow it as long as the object that is being accessed (callee) and the object performing the access (caller) are from the same code source. In other words, allow the sandboxed code to perform reflections on itself, but not on the Java classes or classes of your own runtime environment.
+This is possible to accomplish using [byte-buddy](https://github.com/raphw/byte-buddy) to replace the methods of Java classes that perform the security check with a custom implementation and security permission.
 
- This is possible to accomplish using [byte-buddy](https://github.com/raphw/byte-buddy) to replace the methods of Java classes that perform the security check with a custom implementation and security permission.
-
- For example, the `suppressAccessChecks` permission is checked by the `AccessibleObject` class in the `setAccessible` method. By replacing this method we can check the class loader instance of the callee and the caller, and if they match perform a security check using a custom permission `UserSetAccessiblePermission`. If the callee and caller do not match, then instead if checks the standard `suppressAccessChecks` permission.
+For example, the `suppressAccessChecks` permission is checked by the `AccessibleObject` class in the `setAccessible` method. By replacing this method we can check the class loader instance of the callee and the caller, and if they match perform a security check using a custom permission `UserSetAccessiblePermission`. If the callee and caller do not match, then instead if checks the standard `suppressAccessChecks` permission.
 
 
 ## License
