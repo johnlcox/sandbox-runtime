@@ -18,3 +18,4 @@ dist
 *.gz
 journal
 generated.keystore
+dependency-reduced-pom.xml
