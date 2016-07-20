@@ -62,7 +62,7 @@ public class AccessibleObjectTransformer implements BootstrapTransformationDefin
                 typePool.describe(
                     "com.leacox.sandbox.security.stub.java.lang.reflect.AccessibleObjectStub")
                     .resolve()
-            ).defineAmbiguityResolver().andThen(MethodCall.invoke(setAccessible0Method).withThis().withAllArguments()));
+            ).andThen(MethodCall.invoke(setAccessible0Method).withThis().withAllArguments()));
       }
     };
   }

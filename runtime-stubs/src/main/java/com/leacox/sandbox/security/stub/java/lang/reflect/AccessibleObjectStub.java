@@ -63,6 +63,12 @@ public class AccessibleObjectStub {
     }
   }
 
+  public static void setAccessible(AccessibleObject[] array, boolean flag) {
+    for (AccessibleObject ao : array) {
+      setAccessible(ao, flag);
+    }
+  }
+
   private static Permission getUserAccessPermission(AccessibleObject ao)
       throws IllegalAccessException, InvocationTargetException, InstantiationException,
       NoSuchMethodException, ClassNotFoundException {
